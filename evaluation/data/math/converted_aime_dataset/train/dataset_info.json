@@ -1,0 +1,46 @@
+{
+  "builder_name": "csv",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "csv",
+  "dataset_size": 358605,
+  "description": "",
+  "download_checksums": {
+    "/u/darora1/AIME_Dataset_1983_2024.csv": {
+      "num_bytes": 342215,
+      "checksum": null
+    }
+  },
+  "download_size": 342215,
+  "features": {
+    "problem": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "solution": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "year": {
+      "dtype": "int64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 700820,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 358605,
+      "num_examples": 933,
+      "dataset_name": "csv"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

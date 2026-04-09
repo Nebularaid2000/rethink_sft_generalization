@@ -1,0 +1,16 @@
+task: halueval_qa
+dataset_path: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/halueval/qa_samples
+output_type: generate_until
+training_split: train
+validation_split: train
+test_split: train
+num_fewshot: 0
+doc_to_text: !function utils.doc_to_text_qa
+doc_to_target: !function utils.doc_to_target
+process_results: !function utils.process_results
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 2.0

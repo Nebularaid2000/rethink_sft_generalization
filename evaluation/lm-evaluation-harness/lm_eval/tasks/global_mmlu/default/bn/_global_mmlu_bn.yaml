@@ -1,0 +1,19 @@
+group: global_mmlu_bn
+generation_kwargs:
+  until: []
+  do_sample: True
+  temperature: 0.6
+task:
+  - global_mmlu_bn_business
+  - global_mmlu_bn_humanities
+  - global_mmlu_bn_medical
+  - global_mmlu_bn_other
+  - global_mmlu_bn_stem
+  - global_mmlu_bn_social_sciences
+aggregate_metric_list:
+  - aggregation: mean
+    metric: exact_match
+    weight_by_size: true
+    filter_list: custom-extract
+metadata:
+  version: 0.0

@@ -1,0 +1,46 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "aimo-validation-aime",
+  "dataset_size": 520443,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/AI-MO/aimo-validation-aime@8c6be017548b0fe2eb9fdf2239fca99700b9bccf/data/train-00000-of-00001.parquet": {
+      "num_bytes": 261038,
+      "checksum": null
+    }
+  },
+  "download_size": 261038,
+  "features": {
+    "problem": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "solution": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "year": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 781481,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 520443,
+      "num_examples": 90,
+      "dataset_name": "aimo-validation-aime"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
