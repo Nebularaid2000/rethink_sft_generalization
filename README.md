@@ -26,8 +26,9 @@
 - [Citation](#citation)
 
 ## 📢News
-- **[2025/04/11]** We release the raw dataset before filtering and random selection (44k queries, each with 32 responses): [Huggingface](https://huggingface.co/datasets/jasonrqh/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy), [Modelscope](https://modelscope.cn/datasets/nebularaid/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy). **We also release the token-level log probability and entropy from the teacher model**. We did not make full use of this dataset, and believe that it might be useful for future research.
-- **[2025/04/10]** Our paper is available on [Huggingface daily paper](https://huggingface.co/papers/2604.06628). If you enjoy our work, we warmly invite you to **upvote** it on Huggingface!
+- **[2026/04/15]** We are glad that our paper **has guided practical model training** ([Jackrong/Gemopus-4-31B-it](https://huggingface.co/Jackrong/Gemopus-4-31B-it)) by the author of [Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled](https://huggingface.co/Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled)! Check these models if you are interested.
+- **[2026/04/11]** We release the raw dataset before filtering and random selection (44k queries, each with 32 responses): [Huggingface](https://huggingface.co/datasets/jasonrqh/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy), [Modelscope](https://modelscope.cn/datasets/nebularaid/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy). **We also release the token-level log probability and entropy from the teacher model**. We did not make full use of this dataset, and believe that it might be useful for future research.
+- **[2026/04/10]** Our paper is available on [Huggingface daily paper](https://huggingface.co/papers/2604.06628). If you enjoy our work, we warmly invite you to **upvote** it on Huggingface!
 - **[2026/04/09]** Our paper is available on [arXiv](https://arxiv.org/abs/2604.06628). We open-sourced all models and datasets in [this Huggingface collection](https://huggingface.co/collections/jasonrqh/rethink-sft-generalization).
 
 
