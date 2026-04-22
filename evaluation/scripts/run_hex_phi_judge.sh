@@ -18,20 +18,22 @@ JOB_ERR="${LOG_DIR}/hex_phi_judge_${formatted_date}.err"
 export VLLM_USE_MULTIPROCESSING_SPAWN=1
 export PYTHON_MULTIPROCESSING_METHOD=spawn
 
-behaviors_path=data/behavior_datasets/hex-phi.csv
-base_save_dir=../results/harmbench/results_hex-phi_temp0.6
+behaviors_path=${HARM_ROOT}/data/behavior_datasets/hex-phi.csv
+base_save_dir=${UNIFIED_ROOT}/results/harmbench/results_hex-phi_temp0.6
+mkdir -p "$base_save_dir"
+
 save_dir=results_gpt4.1
 
 num_tokens=16384
 num_workers=100 # TODO: configure max workers for your API quota
 
 # TODO: add your model aliases in harmbench/configs/model_configs/models.yaml
-model_names=(
+models=(
     model_alias1
     model_alias2
 )
 
-for model_name in "${model_names[@]}"; do
+for model_name in "${models[@]}"; do
     echo "=============================================="
     echo "Processing model: $model_name"
     echo "=============================================="

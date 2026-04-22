@@ -2,36 +2,6 @@
 # ==============================================================================
 # alpaca_eval: generate responses + evaluate with reward model
 # ==============================================================================
-source /mnt/shared-storage-user/wangpeng/.bashrc
-
-export PATH="$HOME/anaconda3/bin:$PATH"
-
-sudo mkdir -p /models
-sudo chmod 777 /models
-sudo mkdir -p /cfs_oss/shared/ai4good1
-sudo chmod 777 /cfs_oss/shared/ai4good1
-sudo mkdir -p /cfs_oss/shared/ai4good_shared
-sudo chmod 777 /cfs_oss/shared/ai4good_shared
-
-cd /mnt/shared-storage-user/wangpeng
-export AWS_ACCESS_KEY_ID=bqihrarkoe8y0nimkmxc
-export AWS_SECRET_ACCESS_KEY=r1is8lvr26tpzmchvz9jndww5mwtik1cg3g793e1
-
-./s3mount  ailab-public-shared /models --endpoint-url http://hdd1.h.pjlab.org.cn:8060 --force-path-style --no-sign-request
-./s3mount ai4good-h-hdd-1 /cfs_oss/shared/ai4good1 --endpoint-url http://hdd1.h.pjlab.org.cn:8060 --allow-delete --allow-overwrite --force-path-style
-./s3mount ai4good-h-hdd-shared /cfs_oss/shared/ai4good_shared --endpoint-url http://hdd1.h.pjlab.org.cn:8060 --allow-delete --allow-overwrite --force-path-style
-
-set -e
-
-# -------------------- Environment --------------------
-source /mnt/shared-storage-user/wangpeng/.bashrc
-export PATH=/usr/bin:/usr/local/cuda/bin:/home/renqihan/.local/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-export CUDA_HOME=/usr/local/cuda
-export PYTHONPATH=/usr/bin/python:$PYTHONPATH
-export PYTHONUSERBASE=/home/renqihan/.local
-export HF_HUB_CACHE=/mnt/shared-storage-user/renqihan/models
-export HF_HUB_OFFLINE=1
 
 # -------------------- Config (MODIFY HERE) --------------------
 export CUDA_VISIBLE_DEVICES=0,1

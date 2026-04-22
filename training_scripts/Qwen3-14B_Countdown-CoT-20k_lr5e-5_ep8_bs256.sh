@@ -1,9 +1,15 @@
 formatted_date=$(date "+%Y-%m-%d-%H-%M-%S")
 
 ROOT_DIR=/path/to/this/repo
-cd $ROOT_DIR
-JOB_LOG="${ROOT_DIR}/log/${formatted_date}.log"
-JOB_ERR="${ROOT_DIR}/log/${formatted_date}.err"
+if [ ! -d "$ROOT_DIR" ]; then
+    echo "ROOT_DIR does not exist: $ROOT_DIR" >&2
+    exit 1
+fi
+LOG_DIR="${ROOT_DIR}/log"
+mkdir -p "$LOG_DIR"
+cd "$ROOT_DIR" || exit 1
+JOB_LOG="${LOG_DIR}/${formatted_date}.log"
+JOB_ERR="${LOG_DIR}/${formatted_date}.err"
 
 export NCCL_DEBUG=WARN
 export TOKENIZERS_PARALLELISM=true

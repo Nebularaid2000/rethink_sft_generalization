@@ -15,15 +15,15 @@ mkdir -p "$LOG_DIR"
 JOB_LOG="${LOG_DIR}/hex_phi_generate_${formatted_date}.log"
 JOB_ERR="${LOG_DIR}/hex_phi_generate_${formatted_date}.err"
 
-export VLLM_USE_MULTIPROCESSING_SPAWN=1
-export PYTHON_MULTIPROCESSING_METHOD=spawn
+export VLLM_WORKER_MULTIPROC_METHOD=spawn
 export VLLM_ATTENTION_BACKEND=XFORMERS # use XFORMERS for better reproducibility
 
 temperature=0.6
 method=DirectRequest
 
-behaviors_path=data/behavior_datasets/hex-phi.csv
-base_save_dir=../results/harmbench/results_hex-phi_temp${temperature}
+behaviors_path=${HARM_ROOT}/data/behavior_datasets/hex-phi.csv
+base_save_dir=${UNIFIED_ROOT}/results/harmbench/results_hex-phi_temp${temperature}
+mkdir -p "$base_save_dir"
 
 # TODO: add your model aliases in harmbench/configs/model_configs/models.yaml
 models=(

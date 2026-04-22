@@ -1,5 +1,8 @@
 #!/bin/bash
 
+ROOT_DIR=/path/to/this/repo
+export PYTHONPATH=$ROOT_DIR:$PYTHONPATH
+
 ckpt_path_list=(    
     /path/to/model/global_step_10
     /path/to/model/global_step_20

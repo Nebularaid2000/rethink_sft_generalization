@@ -2,49 +2,14 @@
 # ==============================================================================
 # evalchemy: GPQADiamond, LiveCodeBench (code)
 # ==============================================================================
-source /mnt/shared-storage-user/wangpeng/.bashrc
-
-export PATH="$HOME/anaconda3/bin:$PATH"
-
-sudo mkdir -p /models
-sudo chmod 777 /models
-sudo mkdir -p /cfs_oss/shared/ai4good1
-sudo chmod 777 /cfs_oss/shared/ai4good1
-sudo mkdir -p /cfs_oss/shared/ai4good_shared
-sudo chmod 777 /cfs_oss/shared/ai4good_shared
-
-cd /mnt/shared-storage-user/wangpeng
-export AWS_ACCESS_KEY_ID=bqihrarkoe8y0nimkmxc
-export AWS_SECRET_ACCESS_KEY=r1is8lvr26tpzmchvz9jndww5mwtik1cg3g793e1
-
-./s3mount  ailab-public-shared /models --endpoint-url http://hdd1.h.pjlab.org.cn:8060 --force-path-style --no-sign-request
-./s3mount ai4good-h-hdd-1 /cfs_oss/shared/ai4good1 --endpoint-url http://hdd1.h.pjlab.org.cn:8060 --allow-delete --allow-overwrite --force-path-style
-./s3mount ai4good-h-hdd-shared /cfs_oss/shared/ai4good_shared --endpoint-url http://hdd1.h.pjlab.org.cn:8060 --allow-delete --allow-overwrite --force-path-style
-
-set -e
-
-# -------------------- Environment --------------------
-export PATH=/usr/bin:/usr/local/cuda/bin:/home/renqihan/.local/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-export CUDA_HOME=/usr/local/cuda
-export PYTHONPATH=/usr/bin/python:$PYTHONPATH
-export PYTHONUSERBASE=/home/renqihan/.local
 
 export VLLM_ATTENTION_BACKEND=XFORMERS
 export VLLM_WORKER_MULTIPROC_METHOD=spawn
 
-# -------------------- Install --------------------
 UNIFIED_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-
-# Install lm-evaluation-harness (evalchemy dependency)
-PIP_PATH="${UNIFIED_ROOT}/lm-evaluation-harness"
-cd "$PIP_PATH"
-pip install -e .
-pip install bespokelabs bespokelabs-curator sqlalchemy
-
-PROJECT_ROOT="${UNIFIED_ROOT}/evalchemy"
-cd "$PROJECT_ROOT"
-export PYTHONPATH="${PROJECT_ROOT}:$PYTHONPATH"
+EVALCHEMY_ROOT="${UNIFIED_ROOT}/evalchemy"
+cd "$EVALCHEMY_ROOT"
+export PYTHONPATH="${EVALCHEMY_ROOT}:$PYTHONPATH"
 
 # -------------------- Config (MODIFY HERE) --------------------
 export CUDA_VISIBLE_DEVICES=0,1
@@ -58,10 +23,8 @@ TASKS_STR=$(IFS=, ; echo "${EVAL_TASKS[*]}")
 
 MODELS=(
     # TODO: Add your model paths here
-    # /path/to/model/merged_step10
-    # /path/to/model/merged_step40
-    # /mnt/shared-storage-user/ai4good1-share/hf_hub/Qwen/Qwen3-8B-Base
-    /cfs_oss/shared/ai4good1/renqihan/ckpt/offline_H/sft_qw3-base-14b_new-c1-20.5k-16384_vanilla_lr5e-5_ep8_token-mean_bs256/merged_step640
+    /path/to/model/merged_step10
+    /path/to/model/merged_step40
 )
 
 RESULT_ROOT="${UNIFIED_ROOT}/results/evalchemy"
