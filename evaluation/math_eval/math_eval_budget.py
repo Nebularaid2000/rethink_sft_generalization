@@ -14,18 +14,7 @@ import random
 import numpy as np
 import torch
 
-# TODO: change draw dir name
-# DRAW_DIR_NAME = "draw"
-DRAW_DIR_NAME = "draw_20250610"
-
-
-# TODO: dataset-specific configuration
-# MAX_AIME=12000
-# MAX_MATH500=6000
-# MAX_GSM8K=900
-# MAX_AMC=8000
-# MAX_OLYMPIADBENCH=8000
-# MAX_MINERVA=6000
+DRAW_DIR_NAME = "draw"
 
 MAX_AIME=5000
 MAX_MATH500=2000
@@ -37,106 +26,48 @@ MAX_MINERVA=3000
 
 budget_nums = 10
 
-# DATASET_CONFIGS = {
-#     'datasets/converted_aime_dataset': {
-#         'loader': lambda name: load_from_disk(name),
-#         'test_n': 4, 
-#         'temperature': 0.4, 
-#         'max_samples': 100,
-#         'budget_list': np.arange(int(MAX_AIME/budget_nums), int(MAX_AIME/budget_nums + MAX_AIME), int(MAX_AIME/budget_nums)).tolist(),
-#         # 'budget_list': np.arange(4000, 4000 + 1000*budget_nums, 1000).tolist(),
-#         'save_name': 'aime'
-#     },
-#     'di-zhang-fdu/MATH500': {
-#         'loader': lambda name: load_dataset(name),
-#         'test_n': 1, 
-#         'temperature': 0.0,
-#         'max_samples': 500,
-#         'budget_list': np.arange(int(MAX_MATH500/budget_nums), int(MAX_MATH500/budget_nums + MAX_MATH500), int(MAX_MATH500/budget_nums)).tolist(),
-#         # 'budget_list': np.arange(2000, 2000 + 500*budget_nums, 500).tolist(),
-#         'save_name': 'math500'
-#     },
-#     'openai/gsm8k': {
-#         'loader': lambda name: load_dataset(name, 'main'),
-#         'test_n': 1, 'temperature': 0.6, 'max_samples': 1319,
-#         'budget_list': np.arange(int(MAX_GSM8K/budget_nums), int(MAX_GSM8K/budget_nums + MAX_GSM8K), int(MAX_GSM8K/budget_nums)).tolist(),
-#         # 'budget_list': np.arange(100, 100 + 200*budget_nums, 200).tolist(),
-#         'save_name': 'gsm8k'
-#     },
-#     'amc': {
-#         'loader': lambda _: read_jsonl_file("datasets/aimo-validation-amc.jsonl"),
-#         'test_n': 4, 'temperature': 0.4, 'max_samples': -1,
-#         'budget_list': np.arange(int(MAX_AMC/budget_nums), int(MAX_AMC/budget_nums + MAX_AMC), int(MAX_AMC/budget_nums)).tolist(),
-#         # 'budget_list': np.arange(2000, 2000 + 1000*budget_nums, 1000).tolist(),
-#         'save_name': 'amc'
-#     },
-#     'olympiadbench': {
-#         'loader': lambda _: read_jsonl_file("datasets/olympiadbench/test.jsonl"),
-#         'test_n': 10, 'temperature': 0.6, 'max_samples': 100,
-#         'budget_list': np.arange(int(MAX_OLYMPIADBENCH/budget_nums), int(MAX_OLYMPIADBENCH/budget_nums + MAX_OLYMPIADBENCH), int(MAX_OLYMPIADBENCH/budget_nums)).tolist(),
-#         # 'budget_list': np.arange(2000, 2000 + 1000*budget_nums, 1000).tolist(),
-#         'save_name': 'olympiadbench'
-#     },
-#     'minerva_math': {
-#         'loader': lambda _: read_jsonl_file("datasets/minerva_math/test.jsonl"),
-#         'test_n': 10, 'temperature': 0.6, 'max_samples': -1,
-#         'budget_list': np.arange(int(MAX_MINERVA/budget_nums), int(MAX_MINERVA/budget_nums + MAX_MINERVA), int(MAX_MINERVA/budget_nums)).tolist(),
-#         # 'budget_list': np.arange(1000, 1000 + 1000*budget_nums, 1000).tolist(),
-#         'save_name': 'minerva'
-#     },
-# }
-
 DATASET_CONFIGS = {
     '/mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/math/converted_aime_dataset': {
         'loader': lambda name: load_from_disk(name),
-        'test_n': 10, # 测试用 
+        'test_n': 10,
         'temperature': 0.6, 
         'max_samples': 32768,
         'top_p': 0.95,
         'budget_list': np.arange(int(MAX_AIME/budget_nums), int(MAX_AIME/budget_nums + MAX_AIME), int(MAX_AIME/budget_nums)).tolist(),
-        # 'budget_list': np.arange(4000, 4000 + 1000*budget_nums, 1000).tolist(),
         'save_name': 'aime'
     },
     '/mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/math/MATH500': {
         'loader': lambda name: load_dataset(name),
-        # 'test_n': 3, 
         'test_n': 3, 
         'temperature': 0.6,
         'top_p': 0.95,
-        # 'temperature': 0.0,
-        # 'max_samples': 500,
         'max_samples': 32768,
         'budget_list': np.arange(int(MAX_MATH500/budget_nums), int(MAX_MATH500/budget_nums + MAX_MATH500), int(MAX_MATH500/budget_nums)).tolist(),
-        # 'budget_list': np.arange(2000, 2000 + 500*budget_nums, 500).tolist(),
         'save_name': 'math500'
     },
     'openai/gsm8k': {
         'loader': lambda name: load_dataset(name, 'main'),
         'test_n': 1, 'temperature': 0.6, 'max_samples': 1319,'top_p': 1.0,
         'budget_list': np.arange(int(MAX_GSM8K/budget_nums), int(MAX_GSM8K/budget_nums + MAX_GSM8K), int(MAX_GSM8K/budget_nums)).tolist(),
-        # 'budget_list': np.arange(100, 100 + 200*budget_nums, 200).tolist(),
         'save_name': 'gsm8k'
     },
     'amc': {
         'loader': lambda _: read_jsonl_file("datasets/aimo-validation-amc.jsonl"),
         'test_n': 10, 'temperature': 0.6, 'max_samples': -1,'top_p': 1.0,
         'budget_list': np.arange(int(MAX_AMC/budget_nums), int(MAX_AMC/budget_nums + MAX_AMC), int(MAX_AMC/budget_nums)).tolist(),
-        # 'budget_list': np.arange(2000, 2000 + 1000*budget_nums, 1000).tolist(),
         'save_name': 'amc'
     },
     'olympiadbench': {
         'loader': lambda _: read_jsonl_file("datasets/olympiadbench/test.jsonl"),
         'test_n': 1, 'temperature': 0.6, 'top_p': 1.0,
-        'max_samples': 32768, # TODO: 之后正式评测的时候改回来
+        'max_samples': 32768,
         'budget_list': np.arange(int(MAX_OLYMPIADBENCH/budget_nums), int(MAX_OLYMPIADBENCH/budget_nums + MAX_OLYMPIADBENCH), int(MAX_OLYMPIADBENCH/budget_nums)).tolist(),
-        # 'budget_list': np.arange(2000, 2000 + 1000*budget_nums, 1000).tolist(),
         'save_name': 'olympiadbench'
     },
     'minerva_math': {
         'loader': lambda _: read_jsonl_file("datasets/minerva_math/test.jsonl"),
         'test_n': 10, 'temperature': 0.6, 'max_samples': -1,'top_p': 1.0,
         'budget_list': np.arange(int(MAX_MINERVA/budget_nums), int(MAX_MINERVA/budget_nums + MAX_MINERVA), int(MAX_MINERVA/budget_nums)).tolist(),
-        # 'budget_list': np.arange(1000, 1000 + 1000*budget_nums, 1000).tolist(),
         'save_name': 'minerva'
     },
     'humanoid_openr1_math': {
@@ -150,10 +81,6 @@ DATASET_CONFIGS = {
     },
 }
 
-
-
-# ============= Tool functions ==============
-
 def read_jsonl_file(file_path):
     results = []
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -163,45 +90,11 @@ def read_jsonl_file(file_path):
 
 
 def build_prompt(x):
-    """
-    chat=[
-    {"role": "system", "content": "Please reason step by step, and put your final answer within \\boxed{}."}, 
-    {"role": "user", "content": line['question']}
-    ]"""
-    # renqihan 20250610: add system prompt
-    # system_prompt = (
-    #     "A conversation between User and Assistant. The user asks a question, "
-    #     "and the Assistant solves it."
-    #     " The assistant first thinks about the reasoning process in the mind and then provides the user"
-    #     " with the answer. The reasoning process and answer are enclosed within <think></think> and"
-    #     " <answer></answer> tags, respectively, i.e., <think> reasoning process here </think> "
-    #     "<answer> answer here</answer>."
-    # )
-
-    # prompt_templates = {
-    #     "no_instruct": lambda q: f"{q} Please reason step by step, and put your final answer within \\boxed{{}}.",
-    #     "exact": lambda q: f"{q} Please reason step by step, and put your final answer within \\boxed{{}}. Think for {tok_limit_instruct} tokens.",
-    #     "max": lambda q: f"{q} Please reason step by step, and put your final answer within \\boxed{{}}. Think for maximum {tok_limit_instruct} tokens.",
-    #     "more": lambda q: f"{q} Please reason step by step, and put your final answer within \\boxed{{}}. Think with more tokens.",
-    #     "less": lambda q: f"{q} Please reason step by step, and put your final answer within \\boxed{{}}. Think with less tokens."
-    # }
-
-    # message = [
-    #     {"role": "system", "content": system_prompt},
-    #     {
-    #         "role": "user",
-    #         "content": prompt_templates.get(types, prompt_templates["exact"])(x[QUESTION_KEY])
-    #     }
-    # ]
     message = [
-        # {"role": "system", "content": "A conversation between the User and Assistant. The User asks a question, and the Assistant provides a solution. The Assistant first thinks about the reasoning process in the mind and then provides the User with the answer. The reasoning process is enclosed within <|think|> <|/think|>, followed directly by the final answer, like this: <|think|> reasoning process here <|/think|> final answer here."}, 
-        # {"role": "system", "content": "A conversation between the User and Assistant. The User asks a question, and the Assistant provides a solution. The Assistant first thinks about the reasoning process in the mind and then provides the User with the answer. The reasoning process is enclosed within <think> </think>, followed directly by the final answer, like this: <think> reasoning process here </think> final answer here."}, 
         {"role": "user", "content": "{}\n Please reason step by step, and put your final answer within \\boxed{{}}.".format(x[QUESTION_KEY])}
     ]
 
     return message
-
-    # return f"{x[QUESTION_KEY]}\nPlease reason step by step, and put your final answer within \\boxed{{}}." # 两处修改：后面还有一处删去apply template
 
 
 def get_most_common(solns):
@@ -246,7 +139,7 @@ def truncate_responses_by_budget(responses, token_ids_list, budget, tokenizer):
 
 
 def save_results_markdown_and_plot(scores, budgets, save_dir, dataset, model, types, limit_tokens):
-    # 打印 Markdown 表格
+    # Print markdown table
     markdown_lines = ["| Budget | pass@1 | pass@k(majority) | average_pass_rate |",
                       "|--------|--------|------------------|--------------------|"]
     for b in budgets:
@@ -257,13 +150,13 @@ def save_results_markdown_and_plot(scores, budgets, save_dir, dataset, model, ty
     print("\nMarkdown Table:\n")
     print(markdown_text)
 
-    # 保存为 .md 文件
+    # Save to markdown file
     os.makedirs(save_dir, exist_ok=True)
     os.makedirs(os.path.join(args.output_dir, DRAW_DIR_NAME, f"{dataset}_{types}"), exist_ok=True)
     with open(os.path.join(args.output_dir, DRAW_DIR_NAME, f"{dataset}_{types}/{model}.md"), 'w') as f:
         f.write(markdown_text)
 
-    # 绘图
+    # Draw plot
     plt.figure()
     plt.plot(budgets, [scores[b]['pass@1'] for b in budgets], marker='o', label="pass@1")
     plt.plot(budgets, [scores[b]['pass@k(majority)'] for b in budgets], marker='s', label="pass@k(majority)")
@@ -274,14 +167,14 @@ def save_results_markdown_and_plot(scores, budgets, save_dir, dataset, model, ty
     plt.legend()
     plt.grid(True)
 
-    # 保存图像
+    # Save figure
     plot_path = os.path.join(save_dir, "accuracy_vs_budget.png")
     plt.savefig(plot_path)
     plt.close()
 
 
 def save_results_for_native(scores, save_dir, title):
-    # 打印 Markdown 表格
+    # Print markdown table
     markdown_lines = ["| pass@1 | pass@k(majority) | average_pass_rate | avearage_length |",
                       "|--------|------------------|--------------------| -----------------|"]
     
@@ -292,7 +185,7 @@ def save_results_for_native(scores, save_dir, title):
     print("\nMarkdown Table:\n")
     print(markdown_text)
 
-    # 保存为 .md 文件
+    # Save to markdown file
     os.makedirs(save_dir, exist_ok=True)
     with open(os.path.join(save_dir, f"{title}_native.md"), 'w') as f:
         f.write(markdown_text)
@@ -368,9 +261,6 @@ if __name__ == "__main__":
             gold = input[ANSWER_KEY]
             if isinstance(gold, list):
                 gold = gold[0]
-            # try:
-            #     gold = RESPONSE_EXTRACTOR[dataset_name](gold)
-            # except:
             gold = str(gold)
             ans_format = "\\boxed{{{}}}"
             if "boxed" in gold:
@@ -422,7 +312,7 @@ if __name__ == "__main__":
             except:
                 preds.append(r)
 
-        match_flags = [verify(gold_extracted, p) for p in preds] # renqihan 20250610: gold first, pred second
+        match_flags = [verify(gold_extracted, p) for p in preds] # gold first, pred second
 
         pass_1 = int(match_flags[0]) if match_flags else 0
         maj = int(verify(gold_extracted, get_most_common(preds))) if preds else 0
@@ -531,19 +421,9 @@ if __name__ == "__main__":
         
         for x in test_ds:
             prompt = build_prompt(x)
-            # TODO: tokenizer要用原本160几行定义的tokenizer吗
-
-
-            prompt_tokens = tokenizer.apply_chat_template(prompt, add_generation_prompt=True, tokenize=False) # 20250429 renqihan: 加了tokenize=False, 只把template以string的形式加上去，但不进行tokenize
-
-
-            # prompt_tokens = prompt[0]['content']
+            prompt_tokens = tokenizer.apply_chat_template(prompt, add_generation_prompt=True, tokenize=False)
             test_prompts.append(prompt_tokens)
 
-        # sampling_params = SamplingParams(temperature=TEST_TEMPERATURE, 
-        #                                  max_tokens=MAX_TOKENS, 
-        #                                  n=TEST_N,
-        #                                  seed=42)
         sampling_params = SamplingParams(temperature=TEST_TEMPERATURE, 
                                         max_tokens=MAX_TOKENS, 
                                         n=TEST_N,
@@ -552,7 +432,6 @@ if __name__ == "__main__":
         sampling_params.stop_token_ids = [tokenizer.eos_token_id]
 
         print("Generating test outputs...")
-        # print(model.llm_engine.tokenizer.tokenizer.decode(test_prompts[0], skip_special_tokens=False))
         start_time = time.time()
         test_outputs = model.generate(test_prompts, sampling_params=sampling_params, use_tqdm=True)
 
@@ -560,7 +439,6 @@ if __name__ == "__main__":
 
         save_path = f"{args.output_dir}/new_outputs/{saved_model_name}/{dataset_save_name}_budget{budget_list[-1]}/{types}_{tok_limit_instruct}.json"
         results = parse_output(test_ds, test_outputs, save_path)
-        # test_scores = get_scores_parallel(results, budget_list=budget_list, num_workers=cpu_count() - 1)
         print("cpu_count:",cpu_count())
         test_scores = get_scores_parallel(results, budget_list=budget_list,num_workers=max(cpu_count()-1,1))
         end_time = time.time()

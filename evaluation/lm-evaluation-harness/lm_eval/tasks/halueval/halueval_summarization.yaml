@@ -1,5 +1,5 @@
 task: halueval_summarization
-dataset_path: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/halueval/summarization_samples
+dataset_path: ../data/halueval/summarization_samples
 output_type: generate_until
 training_split: train
 validation_split: train

@@ -43,7 +43,7 @@ def download_nltk_resources():
 
     nltk.data.path.append("/mnt/shared-storage-user/renqihan/sft_generalization/evaluation/lm-evaluation-harness/nltk_data")
 
-    # 然后使用相对路径查找
+    # Then search using the relative path.
     try:
         nltk.data.find("tokenizers/punkt")
     except LookupError:

@@ -15,23 +15,14 @@ from eval.task import BaseBenchmark
 
 from .livecodebench_utils import lcb_run, map_to_example, post_process_code, translate_private_test_cases
 
-# HF_HUB_CACHE = os.environ.get("HF_HUB_CACHE")
-# if not HF_HUB_CACHE:
-#     print(
-#         "WARNING: HF_HUB_CACHE environment variable is not set, using default cache directory ~/.cache/huggingface/hub for LiveCodeBench benchmark"
-#     )
-
 
 def has_code(response):
-    # pattern = r"```(?:[a-zA-Z]*)\n(.*?)```"
     pattern = r"```python\n(.*?)```"
-    # Use re.DOTALL to match multiline content inside backticks
     matches = re.findall(pattern, response, re.DOTALL)
     if matches: 
         return matches
     else:
         return response 
-    # return matches
 
 
 # Calculate mean and standard error for all metrics
@@ -82,16 +73,15 @@ class LiveCodeBenchBenchmark(BaseBenchmark):
             or None for non-primary ranks
         """
         examples = self.load_questions()
-        # print(examples.column_names)
         if self.debug:
             examples = examples[:2]
-        # print(examples.keys())
             examples = Dataset.from_dict(examples)
         
 
         all_outputs = []
 
-        for i in range(self.n_repeat): #设置成 1 不动，改重复次数的话在下面vllm参数里面改
+        # Keep n_repeat aligned with vLLM "n" unless multi-repeat evaluation is intended.
+        for i in range(self.n_repeat):
             all_instances = []
             seed = [s + i for s in self.seed]
 
@@ -99,52 +89,20 @@ class LiveCodeBenchBenchmark(BaseBenchmark):
                 if example["is_stdin"]:
                     prompt_text = (
                         "You are an expert Python programmer. You will be given a question (problem specification) and will generate a correct Python program that matches the specification and passes all tests."
-                        # + "Generate an executable Python function generated from the given prompt. The function should take stdin as input and print the output. Simply call the function after the definition."
                         + example["prompt"]
                         + "Read the inputs from stdin solve the problem and write the answer to stdout (do not directly test on the sample inputs). Enclose your code within delimiters as follows: ```python\n# YOUR CODE HERE\n```. Ensure that when the python program runs, it reads the inputs, runs the algorithm and writes output to STDOUT."
                     )
-                    # print(f"stdin_case:{prompt_text}\n")
-                    # print(f"caonima{idx}\n")
                 else:
                     prompt_text = (
                         "You are an expert Python programmer. You will be given a question (problem specification) and will generate a correct Python program that matches the specification and passes all tests."
-                        # + "Generate an executable Python function generated from the given prompt. Return the function body without invoking it at the final solution."
                         + example["prompt"]
                         + "Do not directly test on the sample inputs. Enclose your code within delimiters as follows: ```python\n# YOUR CODE HERE\n```. Return the function body without invoking it at the final solution."
-                        # + "Attention: You must mind that you should write your own code instead of just ```# YOUR CODE HERE```"
                     )
-
-                    # prompt_text = (
-                    #     "Question:"
-                    #     +"You are an expert Python programmer. You will be given a question (problem specification) and will generate a correct Python program that matches the specification and passes all tests."
-                    #     # + "Generate an executable Python function generated from the given prompt. Return the function body without invoking it at the final solution."
-                    #     + example["prompt"]
-                    #     + "Do not directly test on the sample inputs. Enclose your code within delimiters as follows: ```python\n# YOUR CODE HERE\n```. Return the function body without invoking it at the final solution."
-                    #     # + "Attention: You must mind that you should write your own code instead of just ```# YOUR CODE HERE```"
-                    #     +"Answer:"
-                    # )
-
-                    # print(f"no_case:{prompt_text}\n")
                 messages = [
-                    # {"role": "sys", "content": "A conversation between the User and Assistant. The User asks a question, and the Assistant provides a solution. The Assistant first thinks about the reasoning process in the mind and then provides the User with the answer. The reasoning process is enclosed within <|think|> <|/think|>, followed directly by the final answer, like this: <|think|> reasoning process here <|/think|> final answer here."},
                     {"role": "user", "content": prompt_text}
                     ]
 
                 templated_messages = self._prepare_messages(messages, model)
-
-                # ## new chat_template
-                # prompt_text = messages[0]['content']
-                # prompt_token_ids = model.tokenizer.encode(prompt_text, add_special_tokens=False)                                        
-                # # 构造成 vllm 能识别的格式                                                                               
-                # from vllm.inputs import TokensPrompt                                                                                   
-                # templated_messages = TokensPrompt(prompt_token_ids=prompt_token_ids)
-
-                # print(f"template_messages:{templated_messages}\n")
-
-                # templated_messages = templated_messages['prompt_token_ids']
-                # ##
-
-                # print(templated_messages)
 
                 instance = Instance(
                     "generate_until",
@@ -164,27 +122,22 @@ class LiveCodeBenchBenchmark(BaseBenchmark):
                 )
                 instance.repeat_idx = i
                 all_instances.append(instance)
-            # print("fuck you",len(all_instances))
             # Generate model responses
             self.logger.info("Generating responses for LiveCodeBench...")
             outputs = self.compute(model, all_instances)
-            # print(f"output_from_compute:{outputs}\n")
-            # all_outputs.append(outputs)
-            # print(outputs)
             for j in range(len(all_instances)):
                 all_outputs.append(outputs[j][0])
-                # print(outputs[0][0])
                 all_outputs.append(outputs[j][1])
                 all_outputs.append(outputs[j][2])
         def reorder_list(lst, n):
             """
-            将list按列重排：
-            取出位置为0, n, 2n,...的元素放前面；
-            再取1, n+1, 2n+1,...，以此类推。
+            Reorder a list by columns:
+            take indices 0, n, 2n, ... first;
+            then 1, n+1, 2n+1, ... and so on.
             """
             result = []
             for i in range(n):
-                result.extend(lst[i::n])  # lst[i::n] 表示从i开始每隔n取一个
+                result.extend(lst[i::n])
             return result
         temp = reorder_list(all_outputs,3)
         all_outputs = []
@@ -192,25 +145,18 @@ class LiveCodeBenchBenchmark(BaseBenchmark):
         all_outputs.append(temp[:n])
         all_outputs.append(temp[n:n*2])
         all_outputs.append(temp[n*2:])
-        # print(all_outputs)
         print("\n",len(all_outputs),len(all_outputs[0]))
-        # print(all_outputs)
 
         # Return None early for non-primary ranks
         if model.rank != 0:
             return None
 
-        # print(f"example_length:{len(examples)}\n")
-        # print(f"all_outputs_length:{len(all_outputs[0])}\n")
-        # print(all_outputs[0])
         examples_list = []
 
         for example, outputs in zip(examples, zip(*all_outputs)):
-            # print(outputs)
             example["model_outputs"] = list(outputs)
             example["model_answers"] = [has_code(o) for o in outputs]
             examples_list.append(example)
-            # print(example)
 
         return {"examples": examples_list}
 
@@ -247,14 +193,10 @@ class LiveCodeBenchBenchmark(BaseBenchmark):
 
             code_filter_result = example["model_answer"]
 
-            # code_filter_result = [x for x in code_filter_result if "def" in x]
-
             if not code_filter_result or len(code_filter_result) == 0:
                 response_entry["correctness"] = False
                 response_entry["reason"] = "Does not contain code component."
                 return response_entry
-            # else:
-            #     code_filter_result = [x for x in code_filter_result if "def" in x]
 
             try:
                 last_code = code_filter_result[-1]
@@ -433,14 +375,21 @@ class LiveCodeBenchBenchmark(BaseBenchmark):
         """Load LiveCodeBench questions from source."""
         self.logger.info("Loading LiveCodeBench questions from source and converting to dataset...")
         cpu_count = os.cpu_count()
-        # local_csv_path = "/mnt/shared-storage-user/wangpeng/Transferability-of-LLM-Reasoning/eval/evalchemy/eval/chat_benchmarks/LiveCodeBench/data/test2.jsonl"  
-        # ds = load_dataset("json", data_files=local_csv_path)['train']
-        from datasets import load_dataset
-        ds = load_dataset("/mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/livecodebench", 
-                           version_tag="release_v2",
-                           split="test",
-                           trust_remote_code=True)
-        # print(f"nihao{ds.keys()}")
+        data_root = os.environ.get(
+            "LIVECODEBENCH_DATA_DIR",
+            os.path.abspath(
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "../../../../data/code_generation_lite",
+                )
+            ),
+        )
+        ds = load_dataset(
+            data_root,
+            version_tag="release_v2",
+            split="test",
+            trust_remote_code=True,
+        )
         # Avoids "pyarrow.lib.ArrowInvalid: offset overflow while concatenating arrays" when mapping
         processed_shards = []
         num_shards = 4

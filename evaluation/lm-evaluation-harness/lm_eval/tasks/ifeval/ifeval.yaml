@@ -3,7 +3,7 @@ dataset_path: json
 dataset_name: null
 dataset_kwargs:
   data_files:
-    train: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/ifeval/train.jsonl
+    train: ../data/ifeval/train.jsonl
 output_type: generate_until
 test_split: train
 num_fewshot: 0

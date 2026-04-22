@@ -1,5 +1,5 @@
 task: halueval_qa
-dataset_path: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/halueval/qa_samples
+dataset_path: ../data/halueval/qa_samples
 output_type: generate_until
 training_split: train
 validation_split: train

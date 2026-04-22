@@ -1,5 +1,5 @@
 task: halueval_dialogue
-dataset_path: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/halueval/dialogue_samples
+dataset_path: ../data/halueval/dialogue_samples
 output_type: generate_until
 training_split: train
 validation_split: train

@@ -2,9 +2,9 @@ dataset_path: parquet
 dataset_kwargs:
   trust_remote_code: true
   data_files: 
-    train: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/mmlu_pro/1k_test.parquet
-    validation: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/mmlu_pro/1k_validation.parquet
-    test: /mnt/shared-storage-user/renqihan/sft_generalization/evaluation/data/mmlu_pro/1k_test.parquet
+    train: ../data/mmlu_pro/1k_test.parquet
+    validation: ../data/mmlu_pro/1k_validation.parquet
+    test: ../data/mmlu_pro/1k_test.parquet
 test_split: test
 fewshot_split: validation
 fewshot_config:
