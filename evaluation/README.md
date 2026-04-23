@@ -41,44 +41,16 @@ LLM evaluation suite that integrates many benchmark datasets, covering instructi
 
 ## Environment Requirements
 
-[WIP] We will provide more a detailed environment requirement list and a docker image in one week. Please stay tuned.
-
-### Base Requirements
-
-- Python >= 3.10
-- CUDA >= 12.0
-- At least 2 GPUs (default `tensor_parallel_size=2`)
-
-### Python Packages
+Aside from the requirements mentioned in the main README file, you need to additionally install lm-evaluation-harness in editable mode.
 
 ```bash
-# Core inference engine
-pip install vllm
+cd /path/to/sft_generalization/evaluation
 
-# lm-evaluation-harness (ifeval, mmlu_pro, truthfulqa, halueval)
-cd lm-evaluation-harness && pip install -e .
-
-# Additional dependencies for evalchemy (gpqa, livecodebench)
-pip install bespokelabs bespokelabs-curator sqlalchemy
-
-# Additional dependencies for math_eval
-pip install word2number math_verify sympy latex2sympy2 matplotlib
-
-# Additional dependencies for alpaca_eval (reward-model evaluation)
-pip install transformers datasets tqdm pandas
+# install lm-evaluation-harness
+cd lm-evaluation-harness
+pip install -e .
 ```
 
-### Core Dependency Reference
-
-| Package | Purpose |
-|---|------|
-| `vllm` | Inference backend for all frameworks |
-| `transformers` | tokenizer / reward model |
-| `datasets` | Data loading |
-| `torch` | GPU inference |
-| `sympy` / `latex2sympy2` | Answer verification in `math_eval` |
-| `word2number` | Text-to-number conversion in `math_eval` |
-| `bespokelabs-curator` | Dependency for `evalchemy` |
 
 ## Usage
 
@@ -96,12 +68,7 @@ models=(
 For HEx-PHI (`run_hex_phi_generate.sh` / `run_hex_phi_judge.sh`), configure model aliases in `harmbench/configs/model_configs/models.yaml`, then fill alias names in the script arrays:
 
 ```bash
-models=(        # in run_hex_phi_generate.sh
-    model_alias1
-    model_alias2
-)
-
-model_names=(   # in run_hex_phi_judge.sh
+models=(
     model_alias1
     model_alias2
 )
@@ -146,7 +113,7 @@ Most benchmark datasets are localized. Large assets that are excluded from GitHu
 | Benchmark | Data Path | Format |
 |--------|---------|------|
 | IFEval | `data/ifeval/train.jsonl` | jsonl |
-| MMLU-Pro | `lm-evaluation-harness/eval_data/mmlu_pro_1k/` | parquet (relative path, framework-provided) |
+| MMLU-Pro | `data/mmlu_pro/` | parquet |
 | TruthfulQA | `data/truthfulqa/generation/` | HuggingFace dataset |
 | HaluEval | `data/halueval/{qa,dialogue,summarization}_samples/` | HuggingFace dataset |
 | GPQA Diamond | `evalchemy/eval/chat_benchmarks/GPQADiamond/data/gpqa_diamond.csv` | csv (framework-provided) |
@@ -180,8 +147,7 @@ Key configurable parameters in each script:
 
 | Framework | Source |
 |------|------|
-| lm-evaluation-harness | [Transferability-of-LLM-Reasoning](https://github.com/) `eval/lm-evaluation-harness` |
-| evalchemy | [Transferability-of-LLM-Reasoning](https://github.com/) `eval/evalchemy` |
-| math_eval | [math_eval](https://github.com/) |
-| alpaca_eval | [LLM-Extrapolation](https://github.com/) `code/` + `alpac_eval/` |
-| harmbench | [HarmBench](https://github.com/) |
+| lm-evaluation-harness | [Transferability-of-LLM-Reasoning](https://github.com/ReasoningTransfer/Transferability-of-LLM-Reasoning) `eval/lm-evaluation-harness` |
+| evalchemy | [Transferability-of-LLM-Reasoning](https://github.com/ReasoningTransfer/Transferability-of-LLM-Reasoning) `eval/evalchemy` |
+| alpaca_eval | [LLM-Extrapolation](https://github.com/chujiezheng/LLM-Extrapolation) `code/` + `alpac_eval/` |
+| harmbench | [HarmBench](https://github.com/centerforaisafety/HarmBench) |

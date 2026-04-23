@@ -6,7 +6,8 @@ misc/
 **/figures
 evaluation/data/livecodebench
 evaluation/lm-evaluation-harness/nltk_data
-
+evaluation/results
+.hf_cache/
 
 **/*.pt
 **/checkpoints
