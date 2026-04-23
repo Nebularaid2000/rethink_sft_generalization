@@ -25,7 +25,8 @@
 - [Evaluation](#evaluation)
 - [Citation](#citation)
 
-## 📢News
+## 📢 News
+- **[2026/04/22]** Environment setup is now available. You can either install dependencies with `requirements.txt` or use our Docker Hub image: `jasonrqh/sft-generalization:v0.1`.
 - **[2026/04/15]** We are glad that our paper **has helped guide practical model training** of [Jackrong/Gemopus-4-31B-it](https://huggingface.co/Jackrong/Gemopus-4-31B-it), which is another impressive release from the author of [Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled](https://huggingface.co/Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled). Check these models if you are interested.
 - **[2026/04/11]** We release the raw dataset before filtering and random selection (44k queries, each with 32 responses): [Huggingface](https://huggingface.co/datasets/jasonrqh/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy), [Modelscope](https://modelscope.cn/datasets/nebularaid/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy). **We also release the token-level log probability and entropy from the teacher model**. We did not make full use of this dataset, and believe that it might be useful for future research.
 - **[2026/04/10]** Our paper is available on [Huggingface daily paper](https://huggingface.co/papers/2604.06628). If you enjoy our work, we warmly invite you to **upvote** it on Huggingface!
@@ -62,13 +63,22 @@ Main findings:
 
 ## Getting Started
 
-### 1) [WIP] Environment setup
+### 1) Environment setup
 
-We will provide the requirements and a docker image in one week.
+You can set up the environment in either of the following ways:
 
 ```bash
-Comming soon.
+# Option 1: install dependencies from requirements.txt
+pip install -r requirements.txt
+
+# Option 2: use our Docker Hub image
+docker pull jasonrqh/sft-generalization:v0.1
 ```
+
+Main dependencies:
+- Core training/runtime: `torch`, `transformers`, `datasets`, `accelerate`, `hydra-core`, `ray`, `tensordict`, `peft`, `pyarrow`, `wandb`, `torchdata`,`flash-attn`
+- Evaluation: `numpy`, `pandas`, `scikit-learn`, `matplotlib`, `fastapi`, `vllm`
+
 
 ### 2) Required script edits before training
 
@@ -127,7 +137,7 @@ bash training_scripts/Qwen3-14B_Math-CoT-20k_lr5e-5_ep8_bs256.sh
    `training_scripts/Qwen3-14B_Math-NoCoT-20k_lr5e-5_ep8_bs256.sh`  
    `training_scripts/Qwen3-14B_Countdown-CoT-20k_lr5e-5_ep8_bs256.sh`  
    `training_scripts/Qwen3-14B_DeepSeek-R1-20k_lr5e-5_ep8_bs256.sh`
-   `training_scripts/Qwen3-14B_NuminaMath-20k_lr5e-5_ep8_bs256.sh`
+   `training_scripts/Qwen3-14B_Numina-Math-20k_lr5e-5_ep8_bs256.sh`
 6. Capability scaling (Qwen3 1.7B/4B/8B/14B)  
    `training_scripts/Qwen3-1.7B_Math-CoT-20k_lr5e-5_ep8_bs256.sh`  
    `training_scripts/Qwen3-4B_Math-CoT-20k_lr5e-5_ep8_bs256.sh`  
@@ -256,4 +266,4 @@ If you use our code, model, or dataset in your project, please consider citing u
 ```
 
 ## Acknowledgement
-[WIP]
+We thank the open-source communities and contributors behind [verl](https://github.com/verl-project/verl), [TinyZero](https://github.com/Jiayi-Pan/TinyZero), [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness), [evalchemy](https://github.com/mlfoundations/evalchemy), [Transferability-of-LLM-Reasoning](https://github.com/ReasoningTransfer/Transferability-of-LLM-Reasoning), [LLM-Extrapolation](https://github.com/chujiezheng/LLM-Extrapolation), and [HarmBench](https://github.com/centerforaisafety/HarmBench).
