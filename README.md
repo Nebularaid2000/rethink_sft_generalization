@@ -26,6 +26,8 @@
 - [Citation](#citation)
 
 ## 📢 News
+- **[2026/08/15]** We update the camera-ready and arxiv version. We add more experiments and related references.
+- **[2026/07/09]** **The paper is accepted by COLM 2026!**
 - **[2026/04/22]** Environment setup is now available. You can either install dependencies with `requirements.txt` or use our Docker Hub image: `jasonrqh/sft-generalization:v0.1`.
 - **[2026/04/15]** We are glad that our paper **has helped guide practical model training** of [Jackrong/Gemopus-4-31B-it](https://huggingface.co/Jackrong/Gemopus-4-31B-it), which is another impressive release from the author of [Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled](https://huggingface.co/Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled). Check these models if you are interested.
 - **[2026/04/11]** We release the raw dataset before filtering and random selection (44k queries, each with 32 responses): [Huggingface](https://huggingface.co/datasets/jasonrqh/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy), [Modelscope](https://modelscope.cn/datasets/nebularaid/Math-CoT-44k-Qwen3-32b-n32-16384-with-logprob-and-entropy). **We also release the token-level log probability and entropy from the teacher model**. We did not make full use of this dataset, and believe that it might be useful for future research.
@@ -257,11 +259,12 @@ Please refer to the evaluation guide in [`evaluation/README.md`](evaluation/READ
 ## Citation
 If you use our code, model, or dataset in your project, please consider citing us.
 ```bibtex
-@article{ren2026rethinking_sft_generalization,
+@inproceedings{ren2026rethinking,
   title={Rethinking Generalization in Reasoning SFT: A Conditional Analysis on Optimization, Data, and Model Capability},
   author={Qihan Ren and Peng Wang and Ruikun Cai and Shuai Shao and Dadi Guo and Yuejin Xie and Yafu Li and Quanshi Zhang and Xia Hu and Jing Shao and Dongrui Liu},
-  journal={arXiv preprint arXiv:2604.06628},
-  year={2026}
+  booktitle={Third Conference on Language Modeling},
+  year={2026},
+  url={https://openreview.net/forum?id=EvSOFcwnEb}
 }
 ```
 
